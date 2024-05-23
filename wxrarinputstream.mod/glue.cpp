@@ -37,12 +37,12 @@ int bmx_wxrarinputstream_opennextfile(wxRarInputStream * stream) {
 }
 
 int bmx_wxrarinputstream_extractfile(wxRarInputStream * stream, BBString * destPath, BBString * destName) {
-	char *p = bbStringToCString( destPath );
+	char *p = (char*)bbStringToCString( destPath );
 	char *n;
 	bool ret;
 	
 	if (destName != &bbEmptyString) {
-		n = bbStringToCString( destName );
+		n = (char*)bbStringToCString( destName );
 	}
 	
 	if (n) {
