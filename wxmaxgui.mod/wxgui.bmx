@@ -254,23 +254,23 @@ End Rem
 		Return filter
 	End Method
 
-	Method DesktopWidth:Int()
+	Method DesktopWidth:Int(display:Int) Override
 		Local w:Int, h:Int
 		wxDisplaySize(w, h)
 		Return w
 	End Method
 	
-	Method DesktopHeight:Int()
+	Method DesktopHeight:Int(display:Int) Override
 		Local w:Int, h:Int
 		wxDisplaySize(w, h)
 		Return h
 	End Method
 	
-	Method DesktopDepth:Int()
+	Method DesktopDepth:Int(display:Int) Override
 		Return wxDisplayDepth()
 	End Method
 	
-	Method DesktopHertz:Int()
+	Method DesktopHertz:Int(display:Int) Override
 		Return 0
 	End Method
 	
