@@ -85,7 +85,7 @@ int bmx_wxiobase_close(wxIOBase * base) {
 }
 
 int bmx_wxiobase_open(wxIOBase * base, BBString * deviceName, void * dcs) {
-	char * p = bbStringToCString( deviceName );
+	char * p = (char*)bbStringToCString( deviceName );
 	int ret = base->Open(p, dcs);
 	
 	bbMemFree( p );
@@ -97,7 +97,7 @@ int bmx_wxiobase_putback(wxIOBase * base, int chr) {
 }
 
 int bmx_wxiobase_readuntileos(wxIOBase * base, char * buffer, int * bytesRead, BBString * eos, int timeout, int quota) {
-	char * p = bbStringToCString( eos );
+	char * p = (char*)bbStringToCString( eos );
 	char * newbuff = NULL;
 	
 	size_t size;
