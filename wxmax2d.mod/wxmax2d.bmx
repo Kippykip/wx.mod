@@ -18,7 +18,7 @@
 ' OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 ' THE SOFTWARE.
 ' 
-Strict
+SuperStrict
 
 Rem
 bbdoc: wxMax2D
@@ -101,7 +101,7 @@ Type TwxImageFrame Extends TImageFrame
 		driver.DrawImage(x0, y0, x1, y1, tx, ty, displayBitmap)
 	End Method
 	
-	Function CreateFromPixmap:TwxImageFrame( src:TPixmap, flags:Int )
+	Function CreateFromPixmap:TwxImageFrame( src:TPixmap, flags:Long )
 	
 		'determine tex size
 		'Local tex_w=src.width
@@ -171,16 +171,16 @@ Type TwxMax2DDriver Extends TMax2DDriver
 		'Return GLGraphicsDriver().GraphicsModes()
 	End Method
 ?bmxng
-	Method AttachGraphics:TMax2DGraphics( widget:Byte Ptr ,flags:Int )
+	Method AttachGraphics:TMax2DGraphics( widget:Byte Ptr ,flags:Long ) Override
 ?Not bmxng
 	Method AttachGraphics:TMax2DGraphics( widget:Int ,flags:Int )
 ?
-		Local g:TwxGraphics=wxGraphicsDriver().AttachGraphics( widget,flags )
+		Local g:TwxGraphics=wxGraphicsDriver().AttachGraphics( widget,flags:Long )
 		If g Return TMax2DGraphics.Create( g,Self )
 	End Method
 
 ?bmxng	
-	Method CreateGraphics:TMax2DGraphics( width:Int ,height:Int ,depth:Int ,hertz:Int ,flags:Int,x:Int,y:Int  )
+	Method CreateGraphics:TMax2DGraphics( width:Int ,height:Int ,depth:Int ,hertz:Int ,flags:Long,x:Int,y:Int  )
 		Local g:TwxGraphics=wxGraphicsDriver().CreateGraphics( width,height,depth,hertz,flags,x,y )
 		If g Return TMax2DGraphics.Create( g,Self )
 	End Method
@@ -236,7 +236,7 @@ Type TwxMax2DDriver Extends TMax2DDriver
 '		glViewport 0,0,gw,gh
 	End Method
 	
-	Method Flip( sync:Int  )
+	Method Flip:Int( sync:Int  )
 '		GLGraphicsDriver().Flip sync
 		If dc Then
 			dc.Free()
@@ -244,7 +244,7 @@ Type TwxMax2DDriver Extends TMax2DDriver
 		End If
 	End Method
 	
-	Method ToString$()
+	Method ToString:String() Override
 		Return "wx"
 	End Method
 
@@ -395,7 +395,7 @@ Rem
 End Rem
 	End Method
 	
-	Method DrawPoly( xy#[],handle_x#,handle_y#,origin_x#,origin_y# )
+	Method DrawPoly( xy#[],handle_x#,handle_y#,origin_x#,origin_y#, indices:Int[] )
 		If dc Then
 			If xy.length<6 Or (xy.length&1) Return
 		
@@ -496,7 +496,7 @@ Type TwxGraphics Extends TGraphics
 	End Method
 
 ?bmxng	
-	Method GetSettings( width:Int Var,height:Int  Var,depth:Int Var,hertz:Int Var,flags:Int Var,x:Int Var,y:Int Var )
+	Method GetSettings( width:Int Var,height:Int  Var,depth:Int Var,hertz:Int Var,flags:Long Var,x:Int Var,y:Int Var )
 ?Not bmxng
 	Method GetSettings( width:Int Var,height:Int  Var,depth:Int Var,hertz:Int Var,flags:Int Var )
 ?
@@ -536,7 +536,8 @@ Type TwxGraphicsDriver Extends TGraphicsDriver
 	End Method
 
 ?bmxng
-	Method AttachGraphics:TwxGraphics( widget:Byte Ptr,flags:Int )
+	Method AttachGraphics:TwxGraphics( widget:Byte Ptr,flags:Long ) Override
+
 ?Not bmxng
 	Method AttachGraphics:TwxGraphics( widget:Int,flags:Int )
 ?
@@ -547,7 +548,7 @@ Type TwxGraphicsDriver Extends TGraphicsDriver
 	End Method
 	
 ?bmxng
-	Method CreateGraphics:TwxGraphics( width:Int,height:Int,depth:Int,hertz:Int,flags:Int,x:Int,y:Int )
+	Method CreateGraphics:TwxGraphics( width:Int,height:Int,depth:Int,hertz:Int,flags:Long,x:Int,y:Int )
 ?Not bmxng
 	Method CreateGraphics:TwxGraphics( width:Int,height:Int,depth:Int,hertz:Int,flags:Int )
 ?
@@ -566,7 +567,7 @@ Type TwxGraphicsDriver Extends TGraphicsDriver
 		'bbGLGraphicsSetGraphics context
 	End Method
 	
-	Method Flip( sync:Int )
+	Method Flip:Int( sync:Int )
 'DebugLog "Flip"
 		'bbGLGraphicsFlip sync
 	End Method
@@ -574,6 +575,10 @@ Type TwxGraphicsDriver Extends TGraphicsDriver
 	Method SwapSharedContext()
 'DebugLog "SwapSharedContext"
 		'bbGLGraphicsSwapSharedContext
+	End Method
+
+	Method ToString:String() Override
+		Return "wx"
 	End Method
 
 End Type
